@@ -1,0 +1,109 @@
+/* ========== Navbar Styles ========== */
+.navbar {
+  position: sticky;
+  top: 20px;
+  z-index: 1000;
+  border-radius: 8px;
+  margin: 16px auto;
+  border: 1px solid rgba(255,255,255,0.18);
+  max-width: 720px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  backdrop-filter: blur(9px);
+}
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.navbar-logo-img {
+  height: 28px;
+  width: 28px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+.navbar-logo-text {
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+.navbar-links {
+  display: flex;
+  gap: 16px;
+}
+.navbar-links a {
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  display: inline-block;
+}
+.navbar-cta {
+  background: linear-gradient(259deg, #242424 0%, #101010 100%);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  margin-left: 16px;
+  display: inline-block;
+}
+/* Hamburger Menu (Mobile) */
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  z-index: 1200;
+}
+.navbar-hamburger .bar {
+  display: block;
+  width: 28px;
+  height: 4px;
+  margin: 4px 0;
+  background: #fff;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+.navbar-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  background: rgba(20,20,20,0.98);
+  z-index: 1100;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 0 30px 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  border-radius: 0 0 18px 18px;
+}
+.navbar-mobile-menu a {
+  color: #fff;
+  font-size: 1.3rem;
+  margin: 18px 0;
+  text-decoration: none;
+  display: block;
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .navbar-links, .navbar-cta {
+    display: none !important;
+  }
+  .navbar-hamburger {
+    display: flex !important;
+  }
+}

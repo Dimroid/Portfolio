@@ -310,17 +310,7 @@
             font-size: 0.9rem;
         }
         
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        
-        .fade-in.appear {
-            opacity: 1;
-            transform: translateY(0);
-        }
+
     </style>
 </head>
 <body>
@@ -329,7 +319,7 @@
     
         <nav class="navbar">
         <!-- Logo -->
-        <a href="#" class="navbar-logo">
+        <a href="../index.html" class="navbar-logo">
             <img src="../Dimroid_black_and_white.png" alt="Logo" class="navbar-logo-img">
             <span class="navbar-logo-text">Dimroid</span>
         </a>
@@ -341,22 +331,22 @@
         </button>
         <!-- Navigation Links -->
         <div class="navbar-links">
-            <a href="#services">Services</a>
-            <a href="#stacked-tech">Tech Stack</a>
-            <a href="#portfolio">Portfolio</a>
-            <a href="#contact-map-two-col">Contact</a>
+            <a href="Skills_Listing.html">Services</a>
+            <a href="../index.html#stacked-tech">Tech Stack</a>
+            <a href="../index.html#portfolio">Portfolio</a>
+            <a href="Contact.html">Contact</a>
         </div>
         <!-- Call to Action -->
-        <a href="#contact-map-two-col" class="navbar-cta">
+        <a href="Contact.html" class="navbar-cta">
             Let's Talk
         </a>
         <!-- Mobile Menu (hidden by default) -->
         <div class="navbar-mobile-menu" id="navbarMobileMenu">
-            <a href="#services">Services</a>
-            <a href="#stacked-tech">Tech Stack</a>
-            <a href="#portfolio">Portfolio</a>
-            <a href="#contact-map-two-col">Contact</a>
-            <a href="#contact-map-two-col" class="navbar-cta">Let's Talk</a>
+            <a href="Skills_Listing.html">Services</a>
+            <a href="../index.html#stacked-tech">Tech Stack</a>
+            <a href="../index.html#portfolio">Portfolio</a>
+            <a href="Contact.html">Contact</a>
+            <a href="Contact.html" class="navbar-cta">Let's Talk</a>
         </div>
     </nav>
 
@@ -365,12 +355,12 @@
         <div class="container">
             <div class="contact-container">
                 <div class="contact-info">
-                    <h1 class="fade-in">Let's Work Together</h1>
-                    <p class="fade-in">Have a project in mind or want to discuss potential opportunities? Reach out through any of these channels.</p>
+                    <h1>Let's Work Together</h1>
+                    <p>Have a project in mind or want to discuss potential opportunities? Reach out through any of these channels.</p>
                     
                     <div class="contact-methods">
                         <!-- Email -->
-                        <div class="contact-card fade-in">
+                        <div class="contact-card">
                             <div class="contact-icon">
                                 <i class="fas fa-envelope"></i>
                             </div>
@@ -381,7 +371,7 @@
                         </div>
                         
                         <!-- Phone -->
-                        <div class="contact-card fade-in">
+                        <div class="contact-card">
                             <div class="contact-icon">
                                 <i class="fas fa-phone"></i>
                             </div>
@@ -392,7 +382,7 @@
                         </div>
                         
                         <!-- GitHub -->
-                        <div class="contact-card fade-in">
+                        <div class="contact-card">
                             <div class="contact-icon">
                                 <i class="fab fa-github"></i>
                             </div>
@@ -403,7 +393,7 @@
                         </div>
                         
                         <!-- LinkedIn -->
-                        <div class="contact-card fade-in">
+                        <div class="contact-card">
                             <div class="contact-icon">
                                 <i class="fab fa-linkedin-in"></i>
                             </div>
@@ -416,7 +406,7 @@
                     
                 </div>
                 
-                <div class="contact-form fade-in">
+                <div class="contact-form">
                     <h2>Send Me a Message</h2>
                     <form>
                         <div class="form-group">
@@ -548,23 +538,6 @@
             alert('Message sent successfully! I\'ll get back to you soon.');
             form.reset();
         });
-        
-        // Fade-in animation
-        const fadeElements = document.querySelectorAll('.fade-in');
-        
-        const fadeInOnScroll = () => {
-            fadeElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('appear');
-                }
-            });
-        };
-        
-        window.addEventListener('scroll', fadeInOnScroll);
-        window.addEventListener('load', fadeInOnScroll);
     </script>
 
     <script>

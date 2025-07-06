@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Predictive Maintenance System with Python | PyInTheWild</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #8b5cf6;
+            --dark: #000000;
+            --light: #ffffff;
+            --gray: #9ca3af;
+            --transparent-dark: rgba(0, 0, 0, 0.7);
+            --transparent-light: rgba(255, 255, 255, 0.1);
+            
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            background: var(--transparent-dark);
+            border-bottom: 1px solid var(--transparent-light);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .logo i {
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--light);
+        }
+        
+        /* Article Header */
+        .article-header {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            position: relative;
+        }
+        
+        .article-header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .article-header h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--light), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            color: var(--gray);
+        }
+        
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .article-meta i {
+            color: var(--primary);
+        }
+        
+        .article-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin: 40px 0;
+            box-shadow: var(--shadow);
+        }
+        
+        /* Article Content */
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 0;
+        }
+        
+        .article-content h2 {
+            font-size: 2rem;
+            margin: 40px 0 20px;
+            color: var(--primary);
+        }
+        
+        .article-content h3 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+        }
+        
+        .article-content p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        .article-content ul, .article-content ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+        
+        .article-content li {
+            margin-bottom: 10px;
+            color: var(--gray);
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--transparent-light);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 30px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--gray);
+        }
+        
+        .copy-btn {
+            background: var(--transparent-light);
+            color: var(--light);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .copy-btn:hover {
+            background: var(--primary);
+        }
+        
+        .result-box {
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .result-box h4 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        
+        /* Article Footer */
+        .article-footer {
+            border-top: 1px solid var(--transparent-light);
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .tag {
+            background: var(--transparent-light);
+            color: var(--light);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        
+        .tag:hover {
+            background: var(--primary);
+        }
+        
+        .author-card {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: var(--transparent-dark);
+            border: 1px solid var(--transparent-light);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .author-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--transparent-light);
+            color: var(--light);
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--transparent-dark);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--transparent-light);
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--light);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--transparent-light);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .article-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .article-image {
+                height: 250px;
+            }
+            
+            .author-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles.js Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fab fa-python"></i>
+                    <span>PyInTheWild</span>
+                </a>
+                <div class="nav-links">
+                    <a href="#">Home</a>
+                    <a href="#">Categories</a>
+                    <a href="#">Projects</a>
+                    <a href="#">About</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article Header -->
+    <header class="article-header">
+        <div class="container">
+            <div class="article-header-content">
+                <h1>Building a Predictive Maintenance System with Python</h1>
+                <div class="article-meta">
+                    <span><i class="fas fa-user"></i> By Python Developer</span>
+                    <span><i class="fas fa-calendar"></i> June 15, 2023</span>
+                    <span><i class="fas fa-clock"></i> 8 min read</span>
+                    <span><i class="fas fa-tag"></i> Data Science</span>
+                </div>
+                <p>How we implemented a machine learning pipeline that reduced equipment downtime by 37% for a manufacturing client using Python's scikit-learn and TensorFlow.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Article Content -->
+    <article class="article-content container">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Predictive Maintenance" class="article-image">
+        
+        <h2>The Business Challenge</h2>
+        <p>Our client, a mid-sized manufacturing plant, was experiencing an average of 12 equipment failures per month, resulting in approximately $250,000 in lost productivity annually. Traditional scheduled maintenance wasn't catching these issues early enough, while condition-based monitoring required expensive sensor installations.</p>
+        
+        <p>We proposed a predictive maintenance system that would:</p>
+        <ul>
+            <li>Reduce unplanned downtime by at least 30%</li>
+            <li>Extend equipment lifespan through timely interventions</li>
+            <li>Optimize maintenance staff scheduling</li>
+            <li>Provide actionable insights through a dashboard</li>
+        </ul>
+        
+        <h2>Data Collection and Preparation</h2>
+        <p>The first challenge was gathering sufficient historical data. We worked with:</p>
+        
+        <div class="code-block">
+            <div class="code-header">
+                <span>Data Sources</span>
+            </div>
+            <pre><code class="language-python">data_sources = {
+    "SCADA_system": "5 years of operational data (temperature, vibration, pressure)",
+    "maintenance_logs": "Excel files with repair history",
+    "operator_logs": "Shift notes in PDF format",
+    "sensor_data": "Real-time IoT data from critical machines"
+}</code></pre>
+        </div>
+        
+        <p>We used Pandas for data cleaning and feature engineering:</p>
+        
+        <div class="code-block">
+            <div class="code-header">
+                <span>Python: Data Cleaning</span>
+                <button class="copy-btn">Copy</button>
+            </div>
+            <pre><code class="language-python">import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
+# Load and merge data
+scada = pd.read_csv('scada_data.csv')
+maintenance = pd.read_excel('maintenance_logs.xlsx')
+
+# Create target variable (failure within next 7 days)
+maintenance['failure_date'] = pd.to_datetime(maintenance['failure_date'])
+scada['date'] = pd.to_datetime(scada['timestamp']).dt.date
+scada = scada.merge(maintenance, how='left', on='machine_id')
+
+# Feature engineering
+scada['rolling_temp_avg'] = scada.groupby('machine_id')['temperature'].transform(
+    lambda x: x.rolling(window='24H').mean()
+)
+scada['vibration_change'] = scada.groupby('machine_id')['vibration'].diff()
+
+# Normalize features
+scaler = StandardScaler()
+features = ['temperature', 'vibration', 'pressure', 'rolling_temp_avg', 'vibration_change']
+scada[features] = scaler.fit_transform(scada[features])</code></pre>
+        </div>
+        
+        <div class="result-box">
+            <h4>Result</h4>
+            <p>After preprocessing, we had a clean dataset with 27 meaningful features across 42 machines, covering 1.2 million data points over 5 years.</p>
+        </div>
+        
+        <h2>Model Development</h2>
+        <p>We experimented with several approaches before settling on a hybrid model:</p>
+        
+        <h3>1. Random Forest Classifier (Baseline)</h3>
+        <div class="code-block">
+            <div class="code-header">
+                <span>Python: Random Forest Model</span>
+                <button class="copy-btn">Copy</button>
+            </div>
+            <pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+
+# Prepare data
+X = scada[features]
+y = scada['failure_within_7_days']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train model
+rf = RandomForestClassifier(n_estimators=200, max_depth=10, class_weight='balanced')
+rf.fit(X_train, y_train)
+
+# Evaluate
+y_pred = rf.predict(X_test)
+print(classification_report(y_test, y_pred))</code></pre>
+        </div>
+        
+        <h3>2. LSTM Neural Network (Time Series Approach)</h3>
+        <div class="code-block">
+            <div class="code-header">
+                <span>Python: LSTM Model</span>
+                <button class="copy-btn">Copy</button>
+            </div>
+            <pre><code class="language-python">from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+
+# Reshape data for LSTM
+X_lstm = scada.groupby('machine_id').apply(lambda x: x[features].values[-168:])  # Last 168 hours (1 week)
+X_lstm = np.stack(X_lstm.values)
+y_lstm = scada.groupby('machine_id')['failure_within_7_days'].max()
+
+# Build model
+model = Sequential([
+    LSTM(64, input_shape=(168, len(features)), return_sequences=True),
+    Dropout(0.2),
+    LSTM(32),
+    Dense(1, activation='sigmoid')
+])
+
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.fit(X_lstm, y_lstm, epochs=20, batch_size=32, validation_split=0.2)</code></pre>
+        </div>
+        
+        <h3>3. Ensemble Approach (Final Solution)</h3>
+        <p>Our production model combined both approaches with a custom weighting system:</p>
+        
+        <div class="code-block">
+            <div class="code-header">
+                <span>Python: Ensemble Prediction</span>
+                <button class="copy-btn">Copy</button>
+            </div>
+            <pre><code class="language-python">def predict_failure(machine_data):
+    """Combine RF and LSTM predictions with business logic"""
+    rf_prob = rf.predict_proba(machine_data[features])[0][1]
+    lstm_prob = lstm_model.predict(prepare_lstm_input(machine_data))[0][0]
+    
+    # Weighted average favoring LSTM for recent trends
+    combined_prob = 0.3 * rf_prob + 0.7 * lstm_prob
+    
+    # Apply business rules
+    if machine_data['critical_machine']:
+        combined_prob *= 1.2  # More sensitive for critical machines
+        
+    return combined_prob > 0.45  # Optimal threshold from ROC analysis</code></pre>
+        </div>
+        
+        <div class="result-box">
+            <h4>Model Performance</h4>
+            <ul>
+                <li><strong>Precision:</strong> 82% (When we predict failure, we're right 82% of the time)</li>
+                <li><strong>Recall:</strong> 78% (We catch 78% of actual failures)</li>
+                <li><strong>False Positive Rate:</strong> 9% (Acceptable for this use case)</li>
+            </ul>
+        </div>
+        
+        <h2>Deployment Architecture</h2>
+        <p>We implemented the solution using this tech stack:</p>
+        
+        <div class="code-block">
+            <div class="code-header">
+                <span>System Architecture</span>
+            </div>
+            <pre><code class="language-python">architecture = {
+    "data_ingestion": "Apache Kafka for real-time sensor data",
+    "processing": "PySpark for large batch processing",
+    "model_serving": "FastAPI microservice with TensorFlow Serving",
+    "storage": "PostgreSQL for structured data + S3 for raw data",
+    "dashboard": "Plotly Dash with Celery for async updates",
+    "monitoring": "Prometheus + Grafana for system health",
+    "scheduling": "Airflow for maintenance task coordination"
+}</code></pre>
+        </div>
+        
+        <h3>Critical Implementation Details</h3>
+        <p>Several key decisions made the system successful:</p>
+        
+        <ol>
+            <li><strong>Model Retraining:</strong> Weekly retraining with new data using Airflow DAGs</li>
+            <li><strong>Explainability:</strong> SHAP values for maintenance team transparency</li>
+            <li><strong>Fail-safes:</strong> Fallback to simpler statistical models if ML service fails</li>
+            <li><strong>Alerting:</strong> Slack integration for urgent predictions</li>
+        </ol>
+        
+        <h2>Business Results</h2>
+        <p>After 6 months in production:</p>
+        
+        <div class="result-box">
+            <h4>Key Metrics Improvement</h4>
+            <ul>
+                <li><strong>37% reduction</strong> in unplanned downtime (exceeded goal)</li>
+                <li><strong>22% decrease</strong> in maintenance costs (better scheduling)</li>
+                <li><strong>15% extension</strong> in equipment lifespan</li>
+                <li><strong>ROI:</strong> 4.2x (system paid for itself in 5 months)</li>
+            </ul>
+        </div>
+        
+        <h2>Lessons Learned</h2>
+        <p>This project taught us several valuable lessons about production ML:</p>
+        
+        <ul>
+            <li><strong>Data Quality > Model Complexity:</strong> Cleaning the maintenance logs took 40% of project time but provided the biggest accuracy gains</li>
+            <li><strong>Human-in-the-loop:</strong> Maintenance staff insights improved feature engineering</li>
+            <li><strong>Explainability Matters:</strong> Technicians needed to understand why predictions were made to trust the system</li>
+            <li><strong>Edge Cases:</strong> Had to handle sensor failures gracefully (common in industrial settings)</li>
+        </ul>
+        
+        <h2>Next Steps</h2>
+        <p>We're currently working on:</p>
+        
+        <ul>
+            <li>Adding computer vision for visual inspection integration</li>
+            <li>Implementing reinforcement learning for dynamic maintenance scheduling</li>
+            <li>Porting the system to Rust for performance-critical components</li>
+        </ul>
+        
+        <div class="article-footer">
+            <div class="tags">
+                <a href="#" class="tag">Python</a>
+                <a href="#" class="tag">Machine Learning</a>
+                <a href="#" class="tag">Predictive Maintenance</a>
+                <a href="#" class="tag">Manufacturing</a>
+                <a href="#" class="tag">TensorFlow</a>
+                <a href="#" class="tag">scikit-learn</a>
+            </div>
+            
+            <div class="author-card">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Author" class="author-avatar">
+                <div class="author-info">
+                    <h3>Python Developer</h3>
+                    <p>Full stack Python developer specializing in industrial AI applications. 8+ years of experience bringing machine learning solutions to manufacturing and logistics.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>Python in the Wild</h3>
+                    <p>Practical Python applications from real-world projects and experiments.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Data Science</a></li>
+                        <li><a href="#">Web Development</a></li>
+                        <li><a href="#">Automation</a></li>
+                        <li><a href="#">DevOps</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Code Samples</a></li>
+                        <li><a href="#">Project Templates</a></li>
+                        <li><a href="#">Recommended Tools</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Python in the Wild. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Particle.js Script -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Highlight.js for code syntax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // Initialize particles.js
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 60,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#3b82f6"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#3b82f6",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out"
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 0.5
+                        }
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(0, 0, 0, 0.8)';
+            } else {
+                header.style.background = 'rgba(0, 0, 0, 0.5)';
+            }
+        });
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+        
+        // Copy button functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const codeBlock = button.parentElement.nextElementSibling;
+                const code = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(code).then(() => {
+                    button.textContent = 'Copied!';
+                    setTimeout(() => {
+                        button.textContent = 'Copy';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

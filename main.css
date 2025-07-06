@@ -638,7 +638,7 @@ stacked-tech-section {
   position: relative;
   width: 95%;
   min-width: 0;
-  height: auto;
+  height: 50vh;
   margin: 0 0 2rem 0;
   border-radius: 24px;
   backdrop-filter: none;
@@ -898,7 +898,7 @@ stacked-tech-section {
     margin-top: 8%;
     border: 1px solid rgba(255,255,255,0.18);
     max-width: fit-content;
-    padding: 0px 20px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1195,6 +1195,7 @@ stacked-tech-section {
   /* Stack Card */
 #stacked-tech {
   margin-top: 5rem;
+  margin: auto 20px;
 }
 
 stacked-tech-section {
@@ -1274,7 +1275,7 @@ stacked-tech-section {
   text-align: left;
   position: relative;
   z-index: 2;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   scrollbar-width: none; /* Firefox */
 }
 
